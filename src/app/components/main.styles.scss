@@ -1,0 +1,15 @@
+
+#mainContent {
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 16px;
+  height: calc(100vh - 96px);
+}
+
+.credit-item-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding-top: 24px;
+  flex-wrap: wrap;
+}

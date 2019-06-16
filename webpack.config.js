@@ -1,6 +1,7 @@
 const path = require('path'),
     webpack = require('webpack'),
     HtmlWebpackPlugin = require('html-webpack-plugin');
+const failPlugin = require('webpack-fail-plugin');
 
 module.exports = {
     mode: 'development',
@@ -20,13 +21,39 @@ module.exports = {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                loader: 'ts-loader'
+                loader: 'ts-loader',
+                options: {
+                    transpileOnly: true
+                }
             },
-            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+            {enforce: "pre", test: /\.js$/, loader: "source-map-loader"},
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "sass-loader"
+                ]
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[ext]'
+                        },
+                    },
+                ],
+            },
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'app', 'index.html') }),
+        new HtmlWebpackPlugin({template: path.resolve(__dirname, 'src', 'app', 'index.html')}),
         new webpack.HotModuleReplacementPlugin()
     ]
 }   
