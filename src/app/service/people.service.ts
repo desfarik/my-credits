@@ -6,8 +6,8 @@ export default class PeopleService {
         ['Влад', {name: "Влад", color: "#FFC107"}],
         ['Щука', {name: "Щука", color: "#795548"}]]);
 
-    public static getAllPeople() {
-        return this.people;
+    public static getAllPeople(): IterableIterator<Person> {
+        return this.people.values();
     }
 
     public static getPersonColor(personName: string) {
@@ -28,6 +28,6 @@ export interface PersonCredits {
 export interface CreditNote {
     date: number,
     value: number,
-    total: number,
+    total?: number,
     description: string,
 }

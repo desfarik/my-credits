@@ -76,13 +76,12 @@ export default class ChartComponent extends React.PureComponent<IProps> {
                 height={300}
                 data={this.data}
                 margin={{
-                    top: 5, right: 20, left: 20, bottom: 5,
+                    top: 5, right: 10, left: -30, bottom: 5,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3"/>
                 <XAxis dataKey="name"/>
                 <YAxis/>
-                <Brush />
                 <Tooltip/>
                 {this.props.data.map(personCredits =>
                     <Line key={personCredits.name}

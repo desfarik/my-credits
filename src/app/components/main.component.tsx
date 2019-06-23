@@ -5,6 +5,7 @@ import HeaderComponent from "./header/header.component";
 import {CreditDetailsItemComponent} from "./credit-details/credit-details-item.component";
 import './main.styles.scss';
 import {PersonCredits} from "../service/people.service";
+import CreditNotesService from "../service/credit-notes.service";
 
 export class MainComponent extends React.PureComponent {
     public state = {
@@ -14,6 +15,14 @@ export class MainComponent extends React.PureComponent {
             value: 26
         }]
     };
+    private creditNotesService: CreditNotesService;
+
+
+    public componentDidMount() {
+        if (!this.creditNotesService) {
+            this.creditNotesService = new CreditNotesService()
+        }
+    }
 
     public createNewNote = (newNote: any) => {
     };
@@ -40,7 +49,7 @@ export class MainComponent extends React.PureComponent {
                     {
                         date: 158,
                         value: 5,
-                        total: 28,
+                        total: 128,
                         description: "bl2a",
                     }]
             },
@@ -60,17 +69,18 @@ export class MainComponent extends React.PureComponent {
                     {
                         date: 158,
                         value: 5,
-                        total: 1,
+                        total: 128,
                         description: "bl2a",
                     }]
             },
         ];
         return <React.Fragment>
             <HeaderComponent createNewNote={this.createNewNote} setAdminMode={this.setAdminMode}/>
-            <div id={'mainContent'}>
+            <div className={'mainContent'}>
+                <p><b>Всего: 123</b></p>
                 <ChartComponent data={data}/>
                 <div className={'credit-item-list'}>
-                    {this.state.data.sort((a,b)=>b.value - a.value)
+                    {this.state.data.sort((a, b) => b.value - a.value)
                         .map((entry => <CreditDetailsItemComponent key={entry.name}
                                                                    value={entry.value}
                                                                    name={entry.name}

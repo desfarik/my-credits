@@ -1,9 +1,9 @@
 import * as React from "react";
-import {CircularProgressbar, buildStyles} from "react-circular-progressbar";
+import {buildStyles, CircularProgressbar} from "react-circular-progressbar";
 import AnimatedProgressProvider from "./animated-progress.provider";
 import {easeQuadInOut} from 'd3-ease';
 import './credit-details-item.style.scss'
-import {Typography} from "@material-ui/core";
+import {Button, Typography} from "@material-ui/core";
 import PeopleService from "../../service/people.service";
 
 interface IProps {
@@ -16,6 +16,7 @@ export class CreditDetailsItemComponent extends React.PureComponent<IProps> {
     render() {
         return <div className={'credit-details-item-wrapper'}>
             <div className={'credit-details-item'}>
+                <Button></Button>
                 <AnimatedProgressProvider
                     valueStart={0}
                     valueEnd={this.props.value}

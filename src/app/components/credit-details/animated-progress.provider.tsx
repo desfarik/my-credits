@@ -10,7 +10,6 @@ interface IProps {
 
 export default class AnimatedProgressProvider extends React.PureComponent<IProps> {
 
-    private interval: number;
 
     state = {
         isAnimated: false
@@ -25,10 +24,6 @@ export default class AnimatedProgressProvider extends React.PureComponent<IProps
             isAnimated: !this.state.isAnimated
         });
 
-    }
-
-    componentWillUnmount() {
-        window.clearInterval(this.interval);
     }
 
     render() {

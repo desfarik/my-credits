@@ -2,6 +2,7 @@ import * as React from "react";
 import './header.styles.scss';
 import {ReactNode} from "react";
 import {AppBar, Button, IconButton, Toolbar, Typography} from "@material-ui/core";
+import {AddNewNoteDialog} from "../add-new-note-dialog/add-new-note.dialog";
 
 interface IProps {
     createNewNote: (value: any) => void;
@@ -11,7 +12,8 @@ interface IProps {
 export default class HeaderComponent extends React.PureComponent<IProps> {
     private clickCounter: number = 0;
     public state = {
-        adminMode: false
+        adminMode: true,
+        openAddNewNoteDialog: false,
     };
 
     private onHeaderClick = () => {
@@ -20,6 +22,14 @@ export default class HeaderComponent extends React.PureComponent<IProps> {
             this.setState({adminMode: true});
             this.props.setAdminMode();
         }
+    };
+
+    private addNewNote = () => {
+        this.setState({openAddNewNoteDialog: true});
+    };
+
+    private onCloseDialog = () => {
+        this.setState({openAddNewNoteDialog: false});
     };
 
     render(): ReactNode {
@@ -34,8 +44,11 @@ export default class HeaderComponent extends React.PureComponent<IProps> {
                         Credit notes
                     </Typography>
                 </div>
-                {this.state.adminMode && <Button color="inherit" onClick={this.props.createNewNote}>Add new note</Button>}
+                {this.state.adminMode &&
+                <Button color="inherit" onClick={this.addNewNote}>Add new
+                    note</Button>}
             </Toolbar>
+            {this.state.openAddNewNoteDialog && <AddNewNoteDialog onClose={this.onCloseDialog}/>}
         </AppBar>
     }
 }
