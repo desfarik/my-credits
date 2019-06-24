@@ -2,24 +2,23 @@ const path = require('path'),
     webpack = require('webpack'),
     HtmlWebpackPlugin = require('html-webpack-plugin');
 
+
 module.exports = {
-    mode: 'development',
     entry: {
-        app: ['./src/app/App.tsx', 'webpack-hot-middleware/client'],
+        app: ['./src/app/App.tsx'],
         vendor: ['react', 'react-dom']
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all'
+        }
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'js/[name].bundle.js'
     },
-    devtool: 'inline-source-map',
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
-    },
-    devServer: {
-        contentBase: './dist',
-        hot: true,
-        port: 3000,
     },
     module: {
         rules: [
@@ -56,8 +55,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({template: path.resolve(__dirname, 'src', 'app', 'index.html')}),
-        new webpack.HotModuleReplacementPlugin()
     ]
-}   
+};

@@ -1,14 +1,17 @@
-import * as firebase from "firebase";
 import {firebaseConfig} from "./firebase.config";
 import {CreditNote} from "./people.service";
+import {firebase} from "@firebase/app";
+import '@firebase/database';
+import {FirebaseDatabase} from "@firebase/database-types";
 
 export default class CreditNotesService {
 
-    private database: firebase.database.Database;
+    private database: FirebaseDatabase;
 
     constructor() {
-        firebase.initializeApp(firebaseConfig);
-        this.database = firebase.database();
+        const app = firebase.initializeApp(firebaseConfig);
+        // @ts-ignore
+        this.database = app.database();
     }
 
     public getAllNotes(): Promise<CreditNote[]> {

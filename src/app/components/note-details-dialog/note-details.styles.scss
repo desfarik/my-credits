@@ -1,0 +1,36 @@
+.add-new-note-dialog {
+  .mainContent {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    & > div {
+      margin: 16px 0;
+    }
+  }
+
+  .selected-persons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .selected-person {
+      margin: 4px;
+    }
+  }
+  .dialog-confirm {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px !important;
+    button {
+      min-width: 100px;
+    }
+  }
+}
+
+.select-all {
+  padding-left: 28px !important;
+}
+
+.person-select {
+  top: 15px !important;
+  position: relative !important;
+}

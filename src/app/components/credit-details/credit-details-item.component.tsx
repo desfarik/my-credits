@@ -23,20 +23,21 @@ export class CreditDetailsItemComponent extends React.PureComponent<IProps> {
                     easingFunction={easeQuadInOut}>
                     {(value: number) => {
                         const roundedValue = Math.round(value);
-                        return (
+                        return (<React.Fragment>
                             <CircularProgressbar
+                                // @ts-ignore
                                 className={value > this.props.maxValue ? 'error' : ''}
                                 maxValue={this.props.maxValue}
                                 value={value}
                                 text={`${roundedValue}`}
-                                /* This is important to include, because if you're fully managing the
-                          animation yourself, you'll want to disable the CSS animation. */
                                 styles={buildStyles({
                                     pathTransition: "none",
                                     pathColor: PeopleService.getPersonColor(this.props.name)
                                 })}
                             />
-                        );
+                            {this.props.children}
+                        </React.Fragment>)
+
                     }}
                 </AnimatedProgressProvider>
                 <Typography className={'name'} variant="h5">

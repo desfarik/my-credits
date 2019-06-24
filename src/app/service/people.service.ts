@@ -21,11 +21,6 @@ export interface Person {
     color: string
 }
 
-export interface PersonCredits {
-    name: string,
-    credits: CreditNote[]
-}
-
 export interface CreditNote {
     date: number,
     value: number,

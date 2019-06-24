@@ -18,7 +18,7 @@ import {
     Toolbar,
     Typography
 } from "@material-ui/core";
-import {Close} from "@material-ui/icons";
+import Close from "@material-ui/icons/Close";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import './add-new-note.styles.scss'
