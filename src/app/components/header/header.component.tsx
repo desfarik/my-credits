@@ -3,9 +3,10 @@ import './header.styles.scss';
 import {ReactNode} from "react";
 import {AppBar, Button, IconButton, Toolbar, Typography} from "@material-ui/core";
 import {AddNewNoteDialog} from "../add-new-note-dialog/add-new-note.dialog";
+import {CreditNote} from "../../service/people.service";
 
 interface IProps {
-    createNewNote: (value: any) => void;
+    createNewNotes: (value: any) => void;
     setAdminMode: () => void;
 }
 
@@ -28,7 +29,10 @@ export default class HeaderComponent extends React.PureComponent<IProps> {
         this.setState({openAddNewNoteDialog: true});
     };
 
-    private onCloseDialog = () => {
+    private onCloseDialog = (newNote: CreditNote[]) => {
+        if (newNote.length > 0) {
+            this.props.createNewNotes(newNote);
+        }
         this.setState({openAddNewNoteDialog: false});
     };
 

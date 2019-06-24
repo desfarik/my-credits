@@ -13,6 +13,10 @@
   }
 }
 
+.error + .name {
+  color: #f44336;
+}
+
 .credit-details-item-wrapper {
   width: 50%;
   display: flex;

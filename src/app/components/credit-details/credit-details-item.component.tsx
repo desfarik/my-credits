@@ -16,7 +16,6 @@ export class CreditDetailsItemComponent extends React.PureComponent<IProps> {
     render() {
         return <div className={'credit-details-item-wrapper'}>
             <div className={'credit-details-item'}>
-                <Button></Button>
                 <AnimatedProgressProvider
                     valueStart={0}
                     valueEnd={this.props.value}
@@ -26,6 +25,7 @@ export class CreditDetailsItemComponent extends React.PureComponent<IProps> {
                         const roundedValue = Math.round(value);
                         return (
                             <CircularProgressbar
+                                className={value > this.props.maxValue ? 'error' : ''}
                                 maxValue={this.props.maxValue}
                                 value={value}
                                 text={`${roundedValue}`}

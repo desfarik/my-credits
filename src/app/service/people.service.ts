@@ -10,7 +10,8 @@ export default class PeopleService {
         return this.people.values();
     }
 
-    public static getPersonColor(personName: string) {
+    public static getPersonColor(personName: string): string {
+        // @ts-ignore
         return this.people.get(personName).color;
     }
 }
@@ -28,6 +29,6 @@ export interface PersonCredits {
 export interface CreditNote {
     date: number,
     value: number,
-    total?: number,
+    person: string,
     description: string,
 }

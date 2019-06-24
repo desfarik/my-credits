@@ -1,7 +1,6 @@
 const path = require('path'),
     webpack = require('webpack'),
     HtmlWebpackPlugin = require('html-webpack-plugin');
-const failPlugin = require('webpack-fail-plugin');
 
 module.exports = {
     mode: 'development',
@@ -13,9 +12,14 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'js/[name].bundle.js'
     },
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+    },
+    devServer: {
+        contentBase: './dist',
+        hot: true,
+        port: 3000,
     },
     module: {
         rules: [
@@ -26,7 +30,6 @@ module.exports = {
                     transpileOnly: true
                 }
             },
-            {enforce: "pre", test: /\.js$/, loader: "source-map-loader"},
             {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader'],
@@ -53,6 +56,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({template: path.resolve(__dirname, 'src', 'app', 'index.html')}),
         new webpack.HotModuleReplacementPlugin()
     ]

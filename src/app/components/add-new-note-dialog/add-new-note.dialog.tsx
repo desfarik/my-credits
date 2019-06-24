@@ -1,12 +1,16 @@
 import * as React from 'react';
 import {ReactNode} from 'react';
 import {
-    AppBar, Button,
+    AppBar,
+    Button,
     Checkbox,
     Chip,
-    Dialog, Divider, FormControl,
+    Dialog,
+    Divider,
+    FormControl,
     IconButton,
-    Input, InputLabel,
+    Input,
+    InputLabel,
     ListItemText,
     MenuItem,
     Select,
@@ -18,26 +22,48 @@ import {Close} from "@material-ui/icons";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import './add-new-note.styles.scss'
-import PeopleService from "../../service/people.service";
+import PeopleService, {CreditNote} from "../../service/people.service";
 
 interface IProps {
-    onClose: () => void
+    onClose: (notes: CreditNote[]) => void
 }
 
 export class AddNewNoteDialog extends React.PureComponent<IProps> {
 
     public state = {
-        date: new Date(),
+        date: this.getTodayTime(),
         value: '',
         persons: [],
         description: ''
     };
 
+    public names = ['Я', ...Array.from(PeopleService.getAllPeople()).map((person) => person.name)];
 
-    private closeDialog = () => this.props.onClose();
-    private addNewNote = () => this.props.onClose();
+    private closeDialog = () => this.props.onClose([]);
+
+    private addNewNote = () => {
+        const amountForPerson = Number((parseInt(this.state.value) / this.state.persons.length).toFixed(1));
+        const notes = this.state.persons.filter(p => p !== 'Я').map(person => {
+            return {
+                date: this.state.date.getTime(),
+                value: amountForPerson,
+                description: this.state.description,
+                person: person
+
+            } as CreditNote
+        });
+        this.props.onClose(notes);
+    };
+
+    private getTodayTime() {
+        const today = new Date();
+        return new Date(today.getFullYear(), today.getMonth(), today.getDay());
+    }
+
     private handleDateChange = (newDate: Date) => this.setState({date: newDate});
+
     private handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({value: event.target.value});
+
     private handlePersonsChange = (event: React.ChangeEvent<{ value: any }>) => {
         const selected = event.target.value as string[];
         if (selected.includes('all')) {
@@ -48,9 +74,9 @@ export class AddNewNoteDialog extends React.PureComponent<IProps> {
     };
     private handleDescriptionChange = (event: React.ChangeEvent<{ value: any }>) => this.setState({description: event.target.value as string});
 
-    public names = ['Я', ...Array.from(PeopleService.getAllPeople()).map((person) => person.name)];
 
     public render(): ReactNode {
+        const buttonDisable = !this.state.value || this.state.persons.filter(v => v !== 'Я').length < 1;
         return <Dialog fullScreen open={true} className={'add-new-note-dialog'}>
             <AppBar position="static">
                 <Toolbar className={'toolbar'}>
@@ -101,16 +127,15 @@ export class AddNewNoteDialog extends React.PureComponent<IProps> {
                         <ListItemText primary={'All'}/>
                     </MenuItem>}
                     {<Divider/>}
-                    {this.names.map(name => (
+                    {this.names.map((name: string) => (
                         <MenuItem key={name} value={name}>
-                            <Checkbox checked={this.state.persons.indexOf(name) > -1}/>
+                            <Checkbox checked={(this.state.persons as string[]).includes(name)}/>
                             <ListItemText primary={name}/>
                         </MenuItem>
                     ))}
                 </Select>
                 <TextField
                     required={true}
-                    id="standard-multiline-flexible"
                     label="Party description"
                     multiline
                     rows="4"
@@ -119,7 +144,8 @@ export class AddNewNoteDialog extends React.PureComponent<IProps> {
                     margin="normal"
                 />
                 <div className={'dialog-confirm'}>
-                    <Button variant="contained" color="primary" onClick={this.addNewNote}>Add</Button>
+                    <Button disabled={buttonDisable} variant="contained" color="primary"
+                            onClick={this.addNewNote}>Add</Button>
                 </div>
             </FormControl>
         </Dialog>
