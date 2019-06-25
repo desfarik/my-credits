@@ -57,7 +57,7 @@ export class AddNewNoteDialog extends React.PureComponent<IProps> {
 
     private getTodayTime() {
         const today = new Date();
-        return new Date(today.getFullYear(), today.getMonth(), today.getDay());
+        return new Date(today.getFullYear(), today.getMonth(), today.getDate());
     }
 
     private handleDateChange = (newDate: Date) => this.setState({date: newDate});

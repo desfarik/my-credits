@@ -14,7 +14,7 @@ export class MainComponent extends React.PureComponent {
         selectedPerson: [],
         total: 0,
         totalValues: new Map<string, number>(),
-        adminMode: false,
+        adminMode: true,
         creditNotes: Array<CreditNote>(),
     };
     private creditNotesService: CreditNotesService;

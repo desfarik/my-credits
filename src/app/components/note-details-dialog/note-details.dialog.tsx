@@ -4,6 +4,13 @@ import {AppBar, Dialog, IconButton, TextField, Toolbar, Typography} from "@mater
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import './note-details.styles.scss'
 import PeopleService, {CreditNote} from "../../service/people.service";
+import Button from "@material-ui/core/Button/Button";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import {formatWithOptions} from "date-fns/fp";
+import {RefObject} from "react";
 
 interface IProps {
     adminMode: boolean,
@@ -14,55 +21,26 @@ interface IProps {
 }
 
 export class NoteDetailsDialog extends React.PureComponent<IProps> {
+    private amountInputRef: RefObject<HTMLInputElement>;
+    private dateToString = formatWithOptions({}, 'dd.MM');
 
-    public state = {
-        date: this.getTodayTime(),
-        value: '',
-        persons: [],
-        description: ''
-    };
-
-    public names = ['Я', ...Array.from(PeopleService.getAllPeople()).map((person) => person.name)];
+    constructor(props: IProps) {
+        super(props);
+        this.amountInputRef = React.createRef();
+    }
 
     private closeDialog = () => this.props.onClose();
 
-    private addNewNote = () => {
-        const amountForPerson = Number((parseInt(this.state.value) / this.state.persons.length).toFixed(1));
-        const notes = this.state.persons.filter(p => p !== 'Я').map(person => {
-            return {
-                date: this.state.date.getTime(),
-                value: amountForPerson,
-                description: this.state.description,
-                person: person
+    public componentDidMount() {
 
-            } as CreditNote
-        });
-        this.props.onClose();
-    };
-
-    private getTodayTime() {
-        const today = new Date();
-        return new Date(today.getFullYear(), today.getMonth(), today.getDay());
     }
-
-    private handleDateChange = (newDate: Date) => this.setState({date: newDate});
-
-    private handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({value: event.target.value});
-
-    private handlePersonsChange = (event: React.ChangeEvent<{ value: any }>) => {
-        const selected = event.target.value as string[];
-        if (selected.includes('all')) {
-            this.setState({persons: this.names});
-        } else {
-            this.setState({persons: selected});
-        }
-    };
-    private handleDescriptionChange = (event: React.ChangeEvent<{ value: any }>) => this.setState({description: event.target.value as string});
 
 
     public render(): ReactNode {
-        const buttonDisable = !this.state.value || this.state.persons.filter(v => v !== 'Я').length < 1;
-        return <Dialog fullScreen open={true} className={'add-new-note-dialog'}>
+        const [personName, totalDebt] = this.props.person;
+        // @ts-ignore
+        const notes = this.props.notes.filter((note) => note.person === personName).sort((a, b) => a.date - b.date);
+        return <Dialog fullScreen open={true} className={'note-details-dialog'}>
             <AppBar position="static">
                 <Toolbar className={'toolbar'}>
                     <div className={'toolbar-title'}>
@@ -76,15 +54,43 @@ export class NoteDetailsDialog extends React.PureComponent<IProps> {
                 </Toolbar>
             </AppBar>
             <div className={'mainContent'}>
-                <TextField
-                    required={true}
-                    label="Amount"
-                    value={this.props.person[1]}
-                    onChange={this.handleValueChange}
-                    type="number"
-                    margin="normal"
-                />
-                {this.props.person[0]}
+                {this.props.adminMode && <div className={'admin-tools'}>
+                    <TextField
+                        ref={this.amountInputRef}
+                        required={true}
+                        label="Amount"
+                        value={totalDebt}
+                        type="number"
+                        margin="normal"
+                    />
+                    <Button className={'reduce-button'} variant="contained" color="primary">Reduce</Button>
+                </div>}
+
+                <Typography variant={'subtitle1'}>{personName}:</Typography>
+                <div className={'header'}>
+                    <div className={'date-container'}>
+                        <span>Date</span>
+                        <span>Amount</span>
+                    </div>
+                </div>
+                {notes.map(note =>
+                    <ExpansionPanel className={'expansion-panel'}>
+                        <ExpansionPanelSummary className={'expansion-panel-title'}
+                                               expandIcon={<ExpandMore/>}
+                                               aria-controls="panel1a-content">
+                            <div className={'date-container'}>
+                                <span className={'date'}>{this.dateToString(note.date)}</span>
+                                <span>{note.value}</span>
+                            </div>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                            <Typography variant={'body2'}>
+                                {note.description || 'Нет описания'}
+                            </Typography>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                )}
+
             </div>
         </Dialog>
     }

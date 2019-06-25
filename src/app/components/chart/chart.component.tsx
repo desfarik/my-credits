@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis,} from 'recharts';
 import './chart.styles.scss'
 import PeopleService, {CreditNote, Person} from "../../service/people.service";
 import {formatWithOptions} from 'date-fns/fp';
+import {CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
+// import {CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts/es6";
 
 interface IProps {
     notes: CreditNote[],
@@ -36,21 +37,21 @@ export default class ChartComponent extends React.PureComponent<IProps> {
         const allPersons = Array.from(PeopleService.getAllPeople());
 
         Array.from(dateMap.entries()).forEach(entry => {
-                allPersons.forEach((person: Person) => {
-                    const chartData = entry[1].find((chartData) => person.name === chartData.person);
-                    if (chartData) {
-                        prevTotalValues.set(chartData.person, chartData.value);
-                    } else {
-                        entry[1].push({
-                            person: person.name,
-                            value: (prevTotalValues.get(person.name) || 0)
-                        })
-                    }
-                })
+            allPersons.forEach((person: Person) => {
+                const chartData = entry[1].find((chartData) => person.name === chartData.person);
+                if (chartData) {
+                    prevTotalValues.set(chartData.person, chartData.value);
+                } else {
+                    entry[1].push({
+                        person: person.name,
+                        value: (prevTotalValues.get(person.name) || 0)
+                    })
+                }
+            })
         });
 
         return Array.from(dateMap.entries()).map(entry => {
-            const result: any = {date: this.dateToString(entry[0]),};
+            const result: any = {date: this.dateToString(entry[0])};
             entry[1].forEach((chartData: ChartData) => {
                 result[chartData.person] = chartData.value
             });

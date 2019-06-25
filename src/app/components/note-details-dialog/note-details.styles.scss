@@ -1,36 +1,46 @@
-.add-new-note-dialog {
+.note-details-dialog {
+  .admin-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    .reduce-button {
+      margin-top: 28px;
+    }
+  }
+  .expansion-panel {
+    margin-top: 0 !important;
+    margin-bottom: -1px !important;
+    box-shadow: none;
+    border-bottom: 2px solid #d4d4d4;
+    .expansion-panel-title {
+      max-height: 48px;
+      min-height: 48px;
+    }
+  }
+  .MuiPaper-root:last-child {
+    border-width: 1px;
+  }
   .mainContent {
-    display: flex;
-    flex-direction: column;
-    padding: 24px;
-    & > div {
-      margin: 16px 0;
+    .header + .MuiPaper-root {
+      border-top: 1px solid #d4d4d4;
     }
   }
-
-  .selected-persons {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    .selected-person {
-      margin: 4px;
-    }
+  .header {
+    color: rgba(0, 0, 0, 0.54);
+    padding-left: 24px;
   }
-  .dialog-confirm {
+  .date-container {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 24px !important;
-    button {
-      min-width: 100px;
-    }
+    justify-content: space-between;
+    width: 140px;
+    padding: 14px 40px 14px 0;
+    font-size: 0.875rem;
+    text-align: left;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1.43;
+    vertical-align: inherit;
   }
 }
 
-.select-all {
-  padding-left: 28px !important;
-}
-
-.person-select {
-  top: 15px !important;
-  position: relative !important;
-}
