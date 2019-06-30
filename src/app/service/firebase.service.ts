@@ -21,7 +21,7 @@ export default class FirebaseService {
 
     public getAllNotes(): Promise<CreditNote[]> {
         return this.database.ref('notes').once('value')
-            .then(snapshot => Object.values(snapshot.val()) as CreditNote[])
+            .then(snapshot => snapshot && snapshot.val() && Object.values(snapshot.val()) as CreditNote[] || [])
     }
 
     public saveNotes(notes: CreditNote[]): void {

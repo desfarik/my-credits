@@ -15,7 +15,6 @@ import {TransitionProps} from "@material-ui/core/transitions";
 
 interface IProps {
     adminMode: boolean,
-    onCloseNotes: (amount: number) => void,
     onClose: () => void,
     person: ChartData,
     notes: CreditNote[],

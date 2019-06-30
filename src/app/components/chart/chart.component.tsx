@@ -48,7 +48,7 @@ export default class ChartComponent extends React.PureComponent<IProps> {
             </text>
             <text x={x} y={y + 16} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central"
                   onClick={this.onclick.bind(this, this.data[index])}>
-                {this.data[index].value.toFixed(1)}
+                {this.data[index].value.toFixed(2)}
             </text>
         </React.Fragment>
     };
