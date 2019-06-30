@@ -3,8 +3,8 @@ export default class PeopleService {
         ['Алена', {name: "Алена", color: "#9C27B0"}],
         ['Жека', {name: "Жека", color: "#2196F3"}],
         ['Никита', {name: "Никита", color: "#4CAF50"}],
-        ['Влад', {name: "Влад", color: "#FFC107"}],
-        ['Щука', {name: "Щука", color: "#795548"}]]);
+        ['Влад', {name: "Влад", color: "#607D8B"}],
+        ['Щука', {name: "Щука", color: "#FF9800"}]]);
 
     public static getAllPeople(): IterableIterator<Person> {
         return this.people.values();

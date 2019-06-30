@@ -11,12 +11,13 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/Expan
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import {formatWithOptions} from "date-fns/fp";
 import {RefObject} from "react";
+import {ChartData} from "../chart/chart.component";
 
 interface IProps {
     adminMode: boolean,
     onCloseNotes: (amount: number) => void,
     onClose: () => void,
-    person: Array<number>,
+    person: ChartData,
     notes: CreditNote[]
 }
 
@@ -37,9 +38,8 @@ export class NoteDetailsDialog extends React.PureComponent<IProps> {
 
 
     public render(): ReactNode {
-        const [personName, totalDebt] = this.props.person;
         // @ts-ignore
-        const notes = this.props.notes.filter((note) => note.person === personName).sort((a, b) => a.date - b.date);
+        const notes = this.props.notes.filter((note) => note.person === this.props.person.name).sort((a, b) => a.date - b.date);
         return <Dialog fullScreen open={true} className={'note-details-dialog'}>
             <AppBar position="static">
                 <Toolbar className={'toolbar'}>
@@ -59,14 +59,14 @@ export class NoteDetailsDialog extends React.PureComponent<IProps> {
                         ref={this.amountInputRef}
                         required={true}
                         label="Amount"
-                        value={totalDebt}
+                        value={this.props.person.value.toFixed(1)}
                         type="number"
                         margin="normal"
                     />
                     <Button className={'reduce-button'} variant="contained" color="primary">Reduce</Button>
                 </div>}
 
-                <Typography variant={'subtitle1'}>{personName}:</Typography>
+                <Typography variant={'subtitle1'}>{this.props.person.name}:</Typography>
                 <div className={'header'}>
                     <div className={'date-container'}>
                         <span>Date</span>

@@ -1,24 +1,29 @@
 import * as React from 'react';
 import 'react-circular-progressbar/dist/styles.css';
-import ChartComponent from "./chart/chart.component";
+import ChartComponent, {ChartData} from "./chart/chart.component";
 import HeaderComponent from "./header/header.component";
-import {CreditDetailsItemComponent} from "./credit-details/credit-details-item.component";
 import './main.styles.scss';
 import {CreditNote} from "../service/people.service";
 import CreditNotesService from "../service/credit-notes.service";
-import {Button} from "@material-ui/core";
 import {NoteDetailsDialog} from "./note-details-dialog/note-details.dialog";
+import {RefObject} from "react";
 
 export class MainComponent extends React.PureComponent {
     public state = {
-        selectedPerson: [],
+        selectedPerson: null,
         total: 0,
         totalValues: new Map<string, number>(),
         adminMode: true,
         creditNotes: Array<CreditNote>(),
     };
     private creditNotesService: CreditNotesService;
+    private mainContent: RefObject<HTMLDivElement>;
 
+
+    constructor(props: any, context: any) {
+        super(props, context);
+        this.mainContent = React.createRef();
+    }
 
     public async componentDidMount() {
         if (!this.creditNotesService) {
@@ -43,7 +48,7 @@ export class MainComponent extends React.PureComponent {
     };
 
     public onCloseDialog = () => {
-        this.setState({selectedPerson: []});
+        this.setState({selectedPerson: null});
     };
 
     public closeNotes = (amount: number) => {
@@ -51,9 +56,10 @@ export class MainComponent extends React.PureComponent {
     };
 
     render() {
+        console.log(this.mainContent.current);
         return <React.Fragment>
             <HeaderComponent createNewNotes={this.createNewNote} setAdminMode={this.setAdminMode}/>
-            <div className={'mainContent'}>
+            <div className={'mainContent'} ref={this.mainContent}>
                 <p><b>Всего: {this.state.total}</b></p>
                 <ChartComponent notes={this.state.creditNotes} updateTotalValues={this.setTotal}/>
                 <div className={'credit-item-list'}>

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import './chart.styles.scss'
-import PeopleService, {CreditNote, Person} from "../../service/people.service";
+import PeopleService, {CreditNote} from "../../service/people.service";
 import {formatWithOptions} from 'date-fns/fp';
-import {CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
-// import {CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts/es6";
+import {Cell, Pie, PieChart} from "recharts";
 
 interface IProps {
     notes: CreditNote[],
@@ -85,4 +84,10 @@ export default class ChartComponent extends React.PureComponent<IProps> {
             </LineChart>
         );
     }
+}
+
+
+export interface ChartData {
+    value: number,
+    name: string,
 }
