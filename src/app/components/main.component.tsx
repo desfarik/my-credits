@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {RefObject} from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import ChartComponent, {ChartData} from "./chart/chart.component";
 import HeaderComponent from "./header/header.component";
@@ -6,12 +7,14 @@ import './main.styles.scss';
 import {CreditNote} from "../service/people.service";
 import CreditNotesService from "../service/credit-notes.service";
 import {NoteDetailsDialog} from "./note-details-dialog/note-details.dialog";
-import {RefObject} from "react";
+import {Typography} from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
 
 export class MainComponent extends React.PureComponent {
     public state = {
         selectedPerson: null,
-        total: 0,
+        total: null,
+        progressTotal: true,
         totalValues: new Map<string, number>(),
         adminMode: true,
         creditNotes: Array<CreditNote>(),
@@ -29,6 +32,9 @@ export class MainComponent extends React.PureComponent {
         if (!this.creditNotesService) {
             this.creditNotesService = new CreditNotesService()
             this.setState({creditNotes: await this.creditNotesService.getAllNotes()})
+            setTimeout(() => {
+                this.setState({progressTotal: false})
+            }, 1700);
         }
     }
 
@@ -56,7 +62,6 @@ export class MainComponent extends React.PureComponent {
     };
 
     render() {
-        console.log(this.mainContent.current);
         return <React.Fragment>
             <HeaderComponent createNewNotes={this.createNewNote} setAdminMode={this.setAdminMode}/>
             <div className={'mainContent'} ref={this.mainContent}>
@@ -80,6 +85,7 @@ export class MainComponent extends React.PureComponent {
             </div>
             {this.state.selectedPerson.length > 0 && <NoteDetailsDialog onClose={this.onCloseDialog}
                                                              onCloseNotes={this.closeNotes}
+                                                             updateNotes={this.updateCreditNotes}
                                                              adminMode={this.state.adminMode}
                                                              notes={this.state.creditNotes}
                                                              person={this.state.selectedPerson}/>}
