@@ -4,7 +4,7 @@ import {firebase} from "@firebase/app";
 import '@firebase/database';
 import {FirebaseDatabase} from "@firebase/database-types";
 
-export default class CreditNotesService {
+export default class FirebaseService {
 
     private database: FirebaseDatabase;
 
@@ -12,6 +12,11 @@ export default class CreditNotesService {
         const app = firebase.initializeApp(firebaseConfig);
         // @ts-ignore
         this.database = app.database();
+    }
+
+    public checkPassword(password: string): Promise<boolean> {
+        return this.database.ref('password').once('value')
+            .then(snapshot => snapshot.val() === password);
     }
 
     public getAllNotes(): Promise<CreditNote[]> {

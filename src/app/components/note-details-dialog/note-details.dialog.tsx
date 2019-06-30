@@ -43,7 +43,7 @@ export class NoteDetailsDialog extends React.PureComponent<IProps> {
                 note.value = Number(Math.abs(amount).toFixed(2));
                 return note;
             }
-        }).filter(note => !!note);
+        }).filter(note => !!note && note.value > 0);
         this.props.updateNotes([...newNotes, ...this.props.notes.filter((note) => note.person !== this.props.person.name)]);
 
     };

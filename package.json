@@ -10,7 +10,8 @@
     "build:dev": "webpack --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "analyze": "webpack --config webpack.analyze.js",
-    "deploy": "npm run-script build && firebase deploy --only hosting"
+    "deploy": "npm run-script build && firebase deploy --only hosting",
+    "deploy function": "firebase deploy --only functions"
   },
   "sideEffects": false,
   "keywords": [],
