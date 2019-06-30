@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {ReactNode} from 'react';
-import {AppBar, Dialog, IconButton, TextField, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Dialog, IconButton, Slide, TextField, Toolbar, Typography} from "@material-ui/core";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import './note-details.styles.scss'
 import {CreditNote} from "../../service/people.service";
@@ -11,6 +11,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails/Expan
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import {formatWithOptions} from "date-fns/fp";
 import {ChartData} from "../chart/chart.component";
+import {TransitionProps} from "@material-ui/core/transitions";
 
 interface IProps {
     adminMode: boolean,
@@ -20,6 +21,11 @@ interface IProps {
     notes: CreditNote[],
     updateNotes: (notes: CreditNote[]) => void,
 }
+
+
+const Transition = React.forwardRef<any, TransitionProps>(function Transition(props, ref) {
+    return <Slide direction="left" ref={ref} {...props} />;
+});
 
 export class NoteDetailsDialog extends React.PureComponent<IProps> {
     private dateToString = formatWithOptions({}, 'dd.MM');
@@ -54,7 +60,8 @@ export class NoteDetailsDialog extends React.PureComponent<IProps> {
         }
         // @ts-ignore
         const notes = this.props.notes.filter((note) => note.person === this.props.person.name).sort((a, b) => a.date - b.date);
-        return <Dialog fullScreen open={true} className={'note-details-dialog'}>
+        return <Dialog fullScreen open={true} className={'note-details-dialog'}
+                       TransitionComponent={Transition}>
             <AppBar position="static">
                 <Toolbar className={'toolbar'}>
                     <div className={'toolbar-title'}>

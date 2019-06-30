@@ -7,8 +7,11 @@ import './main.styles.scss';
 import {CreditNote} from "../service/people.service";
 import FirebaseService from "../service/firebase.service";
 import {NoteDetailsDialog} from "./note-details-dialog/note-details.dialog";
-import {Typography} from "@material-ui/core";
+import {Slide, Typography} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
+import {TransitionProps} from "@material-ui/core/transitions";
+
+
 
 export class MainComponent extends React.PureComponent {
     public state = {
@@ -21,6 +24,7 @@ export class MainComponent extends React.PureComponent {
     };
     private creditNotesService: FirebaseService;
     private mainContent: RefObject<HTMLDivElement>;
+
 
 
     constructor(props: any, context: any) {

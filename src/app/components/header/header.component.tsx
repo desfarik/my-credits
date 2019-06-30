@@ -1,16 +1,32 @@
 import * as React from "react";
 import {ReactNode} from "react";
 import './header.styles.scss';
-import {AppBar, Button, Dialog, FormControl, IconButton, TextField, Toolbar, Typography} from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    Dialog,
+    FormControl,
+    IconButton,
+    Slide,
+    TextField,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import {AddNewNoteDialog} from "../add-new-note-dialog/add-new-note.dialog";
 import {CreditNote} from "../../service/people.service";
 import Close from "@material-ui/icons/Close";
+import {TransitionProps} from "@material-ui/core/transitions";
 
 interface IProps {
     createNewNotes: (value: any) => void;
     checkPassword: (password: string) => Promise<boolean>;
     adminMode: boolean
 }
+
+export const Transition = React.forwardRef<any, TransitionProps>(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 export default class HeaderComponent extends React.PureComponent<IProps> {
     private clickCounter: number = 0;
@@ -70,7 +86,8 @@ export default class HeaderComponent extends React.PureComponent<IProps> {
     }
 
     getVerifyPasswordDialog = () => {
-        return <Dialog fullScreen open={true} className={'verify-password-dialog'}>
+        return <Dialog fullScreen open={true} className={'verify-password-dialog'}
+        TransitionComponent={Transition}>
             <AppBar position="static">
                 <Toolbar className={'toolbar'}>
                     <div className={'toolbar-title'}>
@@ -80,7 +97,7 @@ export default class HeaderComponent extends React.PureComponent<IProps> {
                             <Close></Close>
                         </IconButton>
                         <Typography variant="h6">
-                            Add new note
+                            Verify password
                         </Typography>
                     </div>
                 </Toolbar>

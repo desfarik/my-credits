@@ -23,6 +23,7 @@ import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns";
 import './add-new-note.styles.scss'
 import PeopleService, {CreditNote} from "../../service/people.service";
+import {Transition} from "../header/header.component";
 
 interface IProps {
     onClose: (notes: CreditNote[]) => void
@@ -77,7 +78,8 @@ export class AddNewNoteDialog extends React.PureComponent<IProps> {
 
     public render(): ReactNode {
         const buttonDisable = !this.state.value || this.state.persons.filter(v => v !== 'Я').length < 1;
-        return <Dialog fullScreen open={true} className={'add-new-note-dialog'}>
+        return <Dialog fullScreen open={true} className={'add-new-note-dialog'}
+                       TransitionComponent={Transition}>
             <AppBar position="static">
                 <Toolbar className={'toolbar'}>
                     <div className={'toolbar-title'}>
