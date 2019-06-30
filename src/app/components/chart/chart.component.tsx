@@ -7,6 +7,8 @@ import {Cell, Pie, PieChart} from "recharts";
 interface IProps {
     notes: CreditNote[],
     updateTotalValues: (totalValues: Map<string, number>) => void,
+    openDetailsDialog: (person: ChartData) => void,
+    width: number
 
 }
 
@@ -16,72 +18,69 @@ export interface ChartData {
 }
 
 export default class ChartComponent extends React.PureComponent<IProps> {
-    private dateToString = formatWithOptions({}, 'dd.MM');
+    private data: ChartData[];
 
-    private convertCreditNotesToChartData() {
-        const dateMap: Map<number, ChartData[]> = new Map<number, ChartData[]>();
+    private convertCreditNotesToChartData(): ChartData[] {
         const prevTotalValues: Map<string, number> = new Map<string, number>();
 
-        this.props.notes.sort((a, b) => a.date - b.date).forEach(creditNote => {
-                dateMap.set(creditNote.date, [...dateMap.get(creditNote.date) || [], {
-                    person: creditNote.person,
-                    value: (prevTotalValues.get(creditNote.person) || 0) + creditNote.value
-                }]);
+        this.props.notes.forEach(creditNote => {
                 prevTotalValues.set(creditNote.person, (prevTotalValues.get(creditNote.person) || 0) + creditNote.value);
             }
         );
-
         this.props.updateTotalValues(prevTotalValues);
-        prevTotalValues.clear();
-        const allPersons = Array.from(PeopleService.getAllPeople());
-
-        Array.from(dateMap.entries()).forEach(entry => {
-            allPersons.forEach((person: Person) => {
-                const chartData = entry[1].find((chartData) => person.name === chartData.person);
-                if (chartData) {
-                    prevTotalValues.set(chartData.person, chartData.value);
-                } else {
-                    entry[1].push({
-                        person: person.name,
-                        value: (prevTotalValues.get(person.name) || 0)
-                    })
-                }
-            })
-        });
-
-        return Array.from(dateMap.entries()).map(entry => {
-            const result: any = {date: this.dateToString(entry[0])};
-            entry[1].forEach((chartData: ChartData) => {
-                result[chartData.person] = chartData.value
-            });
-            return result;
+        return [...prevTotalValues.entries()].map(e => {
+            return {name: e[0], value: e[1]} as ChartData
         });
     }
 
+
+    RADIAN = Math.PI / 180;
+    // @ts-ignore
+    renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, percent, index}) => {
+        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+        const x = cx + radius * Math.cos(-midAngle * this.RADIAN);
+        const y = cy + radius * Math.sin(-midAngle * this.RADIAN);
+
+        return <React.Fragment>
+            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central"
+                  onClick={this.onclick.bind(this, this.data[index])}>
+                {this.data[index].name}
+            </text>
+            <text x={x} y={y + 16} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central"
+                  onClick={this.onclick.bind(this, this.data[index])}>
+                {this.data[index].value.toFixed(1)}
+            </text>
+        </React.Fragment>
+    };
+
+    onclick = (person: ChartData) => {
+        this.props.openDetailsDialog(person);
+    };
+
     render() {
-        const data = this.convertCreditNotesToChartData();
-        console.log(data);
-        const allPersons = Array.from(PeopleService.getAllPeople());
+        this.data = this.convertCreditNotesToChartData().sort(() => Math.random() - 0.5);
         return (
-            <LineChart
-                className={'chart-wrapper'}
-                width={parseInt(getComputedStyle(document.body).width as string) - 32}
-                height={300}
-                data={data}
-                margin={{
-                    top: 5, right: 10, left: -30, bottom: 5,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey="date"/>
-                <YAxis/>
-                <Tooltip/>
-                {allPersons.map((person: Person) =>
-                    <Line key={person.name}
-                          strokeWidth={5} type="monotone" dataKey={person.name}
-                          stroke={person.color} activeDot={{r: 10}}/>
-                )}
-            </LineChart>
+            <PieChart width={this.props.width} height={this.props.width}>
+                <Pie
+                    // @ts-ignore
+                    dataKey="value"
+                    data={this.data}
+                    cx={this.props.width / 2}
+                    cy={this.props.width / 2}
+                    labelLine={false}
+                    label={this.renderCustomizedLabel}
+                    outerRadius={(this.props.width / 2) - 10}
+                    fill="#8884d8"
+                >
+                    {
+                        this.data.map((entry) =>
+                            <Cell
+                                key={entry.name}
+                                fill={PeopleService.getPersonColor(entry.name)}
+                                onClick={this.onclick.bind(this, entry)}/>)
+                    }
+                </Pie>
+            </PieChart>
         );
     }
 }

@@ -65,6 +65,15 @@ export class MainComponent extends React.PureComponent {
     public closeNotes = (amount: number) => {
         console.log(amount);
     };
+    public openDetailsDialog = (person: ChartData) => {
+        this.setState({selectedPerson: person});
+    };
+
+    public updateCreditNotes = (notes: CreditNote[]) => {
+        this.creditNotesService.saveNotes(notes);
+        this.setState({creditNotes: notes});
+    };
+
 
     render() {
         return <React.Fragment>
@@ -72,30 +81,24 @@ export class MainComponent extends React.PureComponent {
                              createNewNotes={this.createNewNote}
                              checkPassword={this.checkPassword}/>
             <div className={'mainContent'} ref={this.mainContent}>
-                <p><b>Всего: {this.state.total}</b></p>
-                <ChartComponent notes={this.state.creditNotes} updateTotalValues={this.setTotal}/>
-                <div className={'credit-item-list'}>
-                    {Array.from(this.state.totalValues.entries()).sort((a, b) => b[1] - a[1])
-                        .map((entry =>
-                                <CreditDetailsItemComponent key={entry[0]}
-                                                            value={entry[1]}
-                                                            name={entry[0]}
-                                                            maxValue={50}>
-                                    <div className={'details-container'}>
-                                        <Button color="inherit"
-                                                onClick={() => this.setState({selectedPerson: entry})}> </Button>
-                                    </div>
-                                </CreditDetailsItemComponent>
-
-                        ))}
-                </div>
+                <Typography className={'total-title'} variant={'h6'}>
+                    Всего: {this.state.progressTotal ?
+                    <CircularProgress className={'progress-circle'} size={35}/> :
+                    this.state.total.toFixed(2)
+                }
+                </Typography>
+                {this.mainContent.current &&
+                <ChartComponent width={parseInt(getComputedStyle(this.mainContent.current).width || '')}
+                                notes={this.state.creditNotes}
+                                updateTotalValues={this.setTotal}
+                                openDetailsDialog={this.openDetailsDialog}/>}
             </div>
-            {this.state.selectedPerson.length > 0 && <NoteDetailsDialog onClose={this.onCloseDialog}
+            {this.state.selectedPerson && <NoteDetailsDialog onClose={this.onCloseDialog}
                                                              onCloseNotes={this.closeNotes}
                                                              updateNotes={this.updateCreditNotes}
                                                              adminMode={this.state.adminMode}
                                                              notes={this.state.creditNotes}
-                                                             person={this.state.selectedPerson}/>}
+                                                             person={this.state.selectedPerson as ChartData}/>}
         </React.Fragment>
     }
 }
