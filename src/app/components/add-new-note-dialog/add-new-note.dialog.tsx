@@ -92,64 +92,67 @@ export class AddNewNoteDialog extends React.PureComponent<IProps> {
                     </div>
                 </Toolbar>
             </AppBar>
-            <FormControl className={'mainContent'}>
-                <TextField
-                    required={true}
-                    label="Amount"
-                    value={this.state.value}
-                    onChange={this.handleValueChange}
-                    type="number"
-                    margin="normal"
-                />
-
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                        value={this.state.date}
-                        onChange={this.handleDateChange}
-                        maxDate={new Date()}
-                        format="dd/MM/yyyy"
+            <div className={'main-content-wrapper'}>
+                <FormControl className={'mainContent'}>
+                    <TextField
+                        required={true}
+                        label="Amount"
+                        value={this.state.value}
+                        onChange={this.handleValueChange}
+                        type="number"
+                        margin="normal"
                     />
-                </MuiPickersUtilsProvider>
-                <InputLabel className={'person-select'} htmlFor="person-select">Persons*</InputLabel>
-                <Select
-                    inputProps={{
-                        name: 'person-select',
-                        id: 'person-select',
-                    }}
-                    multiple
-                    value={this.state.persons}
-                    onChange={this.handlePersonsChange}
-                    input={<Input/>}
-                    renderValue={selected => <div className={'selected-persons'}>{(selected as string[]).map(value =>
-                        <Chip className={'selected-person'}
-                              key={value}
-                              label={value}/>)}</div>}
-                >
-                    {<MenuItem className={'select-all'} key={'all'} value={'all'}>
-                        <ListItemText primary={'All'}/>
-                    </MenuItem>}
-                    {<Divider/>}
-                    {this.names.map((name: string) => (
-                        <MenuItem key={name} value={name}>
-                            <Checkbox checked={(this.state.persons as string[]).includes(name)}/>
-                            <ListItemText primary={name}/>
-                        </MenuItem>
-                    ))}
-                </Select>
-                <TextField
-                    required={true}
-                    label="Party description"
-                    multiline
-                    rows="4"
-                    value={this.state.description}
-                    onChange={this.handleDescriptionChange}
-                    margin="normal"
-                />
-                <div className={'dialog-confirm'}>
-                    <Button disabled={buttonDisable} variant="contained" color="primary"
-                            onClick={this.addNewNote}>Add</Button>
-                </div>
-            </FormControl>
+
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                            value={this.state.date}
+                            onChange={this.handleDateChange}
+                            maxDate={new Date()}
+                            format="dd/MM/yyyy"
+                        />
+                    </MuiPickersUtilsProvider>
+                    <InputLabel className={'person-select'} htmlFor="person-select">Persons*</InputLabel>
+                    <Select
+                        inputProps={{
+                            name: 'person-select',
+                            id: 'person-select',
+                        }}
+                        multiple
+                        value={this.state.persons}
+                        onChange={this.handlePersonsChange}
+                        input={<Input/>}
+                        renderValue={selected => <div
+                            className={'selected-persons'}>{(selected as string[]).map(value =>
+                            <Chip className={'selected-person'}
+                                  key={value}
+                                  label={value}/>)}</div>}
+                    >
+                        {<MenuItem className={'select-all'} key={'all'} value={'all'}>
+                            <ListItemText primary={'All'}/>
+                        </MenuItem>}
+                        {<Divider/>}
+                        {this.names.map((name: string) => (
+                            <MenuItem key={name} value={name}>
+                                <Checkbox checked={(this.state.persons as string[]).includes(name)}/>
+                                <ListItemText primary={name}/>
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <TextField
+                        required={true}
+                        label="Party description"
+                        multiline
+                        rows="4"
+                        value={this.state.description}
+                        onChange={this.handleDescriptionChange}
+                        margin="normal"
+                    />
+                    <div className={'dialog-confirm'}>
+                        <Button disabled={buttonDisable} variant="contained" color="primary"
+                                onClick={this.addNewNote}>Add</Button>
+                    </div>
+                </FormControl>
+            </div>
         </Dialog>
     }
 }

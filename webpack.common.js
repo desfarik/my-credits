@@ -1,6 +1,7 @@
 const path = require('path'),
-    webpack = require('webpack'),
     HtmlWebpackPlugin = require('html-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 
 module.exports = {
@@ -25,6 +26,7 @@ module.exports = {
             {
                 test: /\.(ts|tsx)$/,
                 loader: 'ts-loader',
+                exclude: /node_modules/,
                 options: {
                     transpileOnly: true
                 }
@@ -55,6 +57,12 @@ module.exports = {
         ]
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({template: path.resolve(__dirname, 'src', 'app', 'index.html')}),
+        new CopyPlugin([
+            { from: 'src/images', to: 'images' },
+            { from: 'src/manifest.json', to: '' },
+            { from: 'src/service.worker.js', to: '' },
+        ]),
     ]
 };

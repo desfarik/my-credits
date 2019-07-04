@@ -46,7 +46,8 @@ export default class ChartComponent extends React.PureComponent<IProps> {
                   onClick={this.onclick.bind(this, this.data[index])}>
                 {this.data[index].name}
             </text>
-            <text x={x} y={y + 16} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central"
+            <text x={x} y={y + 16 + parseInt(getComputedStyle(document.body).width) * 0.005} fill="white"
+                  textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central"
                   onClick={this.onclick.bind(this, this.data[index])}>
                 {this.data[index].value.toFixed(2)}
             </text>

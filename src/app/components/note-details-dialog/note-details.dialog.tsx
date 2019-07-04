@@ -73,45 +73,47 @@ export class NoteDetailsDialog extends React.PureComponent<IProps> {
                     </div>
                 </Toolbar>
             </AppBar>
-            <div className={'mainContent'}>
-                {this.props.adminMode && <div className={'admin-tools'}>
-                    <TextField
-                        required={true}
-                        label="Amount"
-                        value={this.state.valueToReduce}
-                        onChange={this.handleValueChange}
-                        type="number"
-                        margin="normal"
-                    />
-                    <Button className={'reduce-button'} variant="contained" color="primary"
-                            onClick={this.reduceAmount}>Reduce</Button>
-                </div>}
+            <div className={'main-content-wrapper'}>
+                <div className={'mainContent'}>
+                    {this.props.adminMode && <div className={'admin-tools'}>
+                        <TextField
+                            required={true}
+                            label="Amount"
+                            value={this.state.valueToReduce}
+                            onChange={this.handleValueChange}
+                            type="number"
+                            margin="normal"
+                        />
+                        <Button className={'reduce-button'} variant="contained" color="primary"
+                                onClick={this.reduceAmount}>Reduce</Button>
+                    </div>}
 
-                <Typography variant={'subtitle1'}>{this.props.person.name}:</Typography>
-                <div className={'header'}>
-                    <div className={'date-container'}>
-                        <span>Date</span>
-                        <span>Amount</span>
+                    <Typography variant={'subtitle1'}>{this.props.person.name}:</Typography>
+                    <div className={'header'}>
+                        <div className={'date-container'}>
+                            <span>Date</span>
+                            <span>Amount</span>
+                        </div>
                     </div>
-                </div>
-                {notes.map(note =>
-                    <ExpansionPanel key={note.date} className={'expansion-panel'}>
-                        <ExpansionPanelSummary className={'expansion-panel-title'}
-                                               expandIcon={<ExpandMore/>}
-                                               aria-controls="panel1a-content">
-                            <div className={'date-container'}>
-                                <span className={'date'}>{this.dateToString(note.date)}</span>
-                                <span>{note.value}</span>
-                            </div>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <Typography variant={'body2'}>
-                                {note.description || 'Нет описания'}
-                            </Typography>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                )}
+                    {notes.map(note =>
+                        <ExpansionPanel key={note.date} className={'expansion-panel'}>
+                            <ExpansionPanelSummary className={'expansion-panel-title'}
+                                                   expandIcon={<ExpandMore/>}
+                                                   aria-controls="panel1a-content">
+                                <div className={'date-container'}>
+                                    <span className={'date'}>{this.dateToString(note.date)}</span>
+                                    <span>{note.value}</span>
+                                </div>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Typography variant={'body2'} className={'note-description'}>
+                                    {note.description || 'Нет описания'}
+                                </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    )}
 
+                </div>
             </div>
         </Dialog>
     }

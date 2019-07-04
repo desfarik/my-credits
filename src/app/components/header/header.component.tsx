@@ -87,7 +87,7 @@ export default class HeaderComponent extends React.PureComponent<IProps> {
 
     getVerifyPasswordDialog = () => {
         return <Dialog fullScreen open={true} className={'verify-password-dialog'}
-        TransitionComponent={Transition}>
+                       TransitionComponent={Transition}>
             <AppBar position="static">
                 <Toolbar className={'toolbar'}>
                     <div className={'toolbar-title'}>
@@ -102,20 +102,22 @@ export default class HeaderComponent extends React.PureComponent<IProps> {
                     </div>
                 </Toolbar>
             </AppBar>
-            <FormControl className={'mainContent'}>
-                <TextField
-                    required={true}
-                    label="Password"
-                    value={this.state.password}
-                    onChange={this.handlePasswordChange}
-                    type="number"
-                    margin="normal"
-                />
-                <div className={'dialog-confirm'}>
-                    <Button variant="contained" color="primary"
-                            onClick={this.verifyPassword}>Verify</Button>
-                </div>
-            </FormControl>
+            <div className={'main-content-wrapper'}>
+                <FormControl className={'mainContent'}>
+                    <TextField
+                        required={true}
+                        label="Password"
+                        value={this.state.password}
+                        onChange={this.handlePasswordChange}
+                        type="number"
+                        margin="normal"
+                    />
+                    <div className={'dialog-confirm'}>
+                        <Button variant="contained" color="primary"
+                                onClick={this.verifyPassword}>Verify</Button>
+                    </div>
+                </FormControl>
+            </div>
         </Dialog>
     }
 }

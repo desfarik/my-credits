@@ -32,11 +32,16 @@ export class MainComponent extends React.PureComponent {
     public async componentDidMount() {
         if (!this.creditNotesService) {
             this.creditNotesService = new FirebaseService();
-            this.setState({creditNotes: await this.creditNotesService.getAllNotes()});
+            const notes = await this.creditNotesService.getAllNotes();
+            this.setState({creditNotes: notes});
             this.setState({adminMode: await this.creditNotesService.checkPassword(localStorage.getItem('last_password') || '')});
-            setTimeout(() => {
+            if (notes.length > 0) {
+                setTimeout(() => {
+                    this.setState({progressTotal: false})
+                }, 1700);
+            } else {
                 this.setState({progressTotal: false})
-            }, 1700);
+            }
         }
     }
 
@@ -78,15 +83,17 @@ export class MainComponent extends React.PureComponent {
             <HeaderComponent adminMode={this.state.adminMode}
                              createNewNotes={this.createNewNote}
                              checkPassword={this.checkPassword}/>
-            <div className={'mainContent'} ref={this.mainContent}>
-                <Typography className={'total-title'} variant={'h6'}>
-                    Всего: {this.state.progressTotal ?
-                    <CircularProgress className={'progress-circle'} size={35}/> :
-                    this.state.total.toFixed(2)
-                }
-                </Typography>
-                {this.mainContent.current && this.getMainContent()
-                }
+            <div className={'main-content-wrapper'}>
+                <div className={'mainContent'} ref={this.mainContent}>
+                    <Typography className={'total-title'} variant={'h6'}>
+                        Всего: {this.state.progressTotal ?
+                        <CircularProgress className={'progress-circle'} size={35}/> :
+                        this.state.total.toFixed(2)
+                    }
+                    </Typography>
+                    {this.mainContent.current && this.getMainContent()
+                    }
+                </div>
             </div>
             {this.state.selectedPerson && <NoteDetailsDialog onClose={this.onCloseDialog}
                                                              updateNotes={this.updateCreditNotes}

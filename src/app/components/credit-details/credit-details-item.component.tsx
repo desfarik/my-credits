@@ -3,7 +3,7 @@ import {buildStyles, CircularProgressbar} from "react-circular-progressbar";
 import AnimatedProgressProvider from "./animated-progress.provider";
 import {easeQuadInOut} from 'd3-ease';
 import './credit-details-item.style.scss'
-import {Button, Typography} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 import PeopleService from "../../service/people.service";
 
 interface IProps {

@@ -9,10 +9,8 @@
     }
   }
   .expansion-panel {
-    margin-top: 0 !important;
-    margin-bottom: -1px !important;
     box-shadow: none;
-    border-bottom: 2px solid #d4d4d4;
+    border-bottom: 1px solid #d4d4d4;
     .expansion-panel-title {
       max-height: 48px;
       min-height: 48px;
@@ -41,6 +39,9 @@
     font-weight: 400;
     line-height: 1.43;
     vertical-align: inherit;
+  }
+  .note-description {
+    white-space: pre-wrap;
   }
 }
 

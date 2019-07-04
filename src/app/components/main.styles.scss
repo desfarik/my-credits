@@ -1,9 +1,24 @@
+@function calcFontSize($f-min, $f-max, $v-min, $v-max, $units: px) {
+  $k: ($f-max - $f-min)/($v-max - $v-min);
+  $b: $f-min - $k * $v-min;
+
+  $b: $b + $units;
+
+  @return calc(#{$k} * 100vw + #{$b});
+}
 
 .mainContent {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.main-content-wrapper {
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 16px!important;
+  padding: calc(16px + 1vw) !important;
   height: calc(100vh - 96px);
+  display: flex;
+  justify-content: center;
 }
 
 .credit-item-list {
@@ -12,6 +27,15 @@
   justify-content: space-around;
   flex-wrap: wrap;
 }
+
+h6, text {
+  font-size: calcFontSize(18, 22, 300, 1280) !important;
+}
+
+span, label, p, input, textarea {
+  font-size: calcFontSize(14, 18, 300, 1280) !important;
+}
+
 .details-container {
   position: absolute;
   height: 100%;
@@ -19,17 +43,22 @@
   top: 0;
   left: 0;
 }
+
 .total-title {
   position: relative;
-  line-height: 33px!important;
+  line-height: 40px !important;
+  display: flex;
+  align-items: center;
   .progress-circle {
-    position: absolute;
-    left: 80px;
+    margin-left: 25px;
   }
 }
+
 .good-people {
+  margin-top: 16px;
   text-align: center;
 }
+
 .good-icon {
   width: 100%
 }
