@@ -43,7 +43,7 @@ export class AddNewNoteDialog extends React.PureComponent<IProps> {
     private closeDialog = () => this.props.onClose([]);
 
     private addNewNote = () => {
-        const amountForPerson = Number((parseInt(this.state.value) / this.state.persons.length).toFixed(1));
+        const amountForPerson = Number((Number(this.state.value.replace(',','.')) / this.state.persons.length).toFixed(1));
         const notes = this.state.persons.filter(p => p !== 'Я').map(person => {
             return {
                 date: this.state.date.getTime(),

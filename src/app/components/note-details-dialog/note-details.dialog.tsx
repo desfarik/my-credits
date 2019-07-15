@@ -29,8 +29,8 @@ const Transition = React.forwardRef<any, TransitionProps>(function Transition(pr
 export class NoteDetailsDialog extends React.PureComponent<IProps> {
     private dateToString = formatWithOptions({}, 'dd.MM');
     state = {
-        valueToReduce: ''
-    }
+        valueToReduce: undefined
+    };
     private closeDialog = () => this.props.onClose();
     private handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({valueToReduce: event.target.value});
 
@@ -54,7 +54,7 @@ export class NoteDetailsDialog extends React.PureComponent<IProps> {
     };
 
     public render(): ReactNode {
-        if (!this.state.valueToReduce) {
+        if (this.state.valueToReduce === undefined) {
             this.setState({valueToReduce: this.props.person.value.toFixed(2)});
         }
         // @ts-ignore
