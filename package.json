@@ -30,7 +30,7 @@
     "react-circular-progressbar": "^2.0.1",
     "react-dom": "^16.8.6",
     "react-move": "^6.0.0",
-    "recharts": "^1.6.2"
+    "recharts": "^2.1.14"
   },
   "devDependencies": {
     "@firebase/app": "~0.4.7",
